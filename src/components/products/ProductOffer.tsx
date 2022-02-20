@@ -29,6 +29,8 @@ const ProductOffer = ({
   const [offerImage, setOfferImage] = useState(image);
   const [isSelected, setIsSelected] = useState(false);
 
+  console.log('rendered');
+
   const handleImageError = () => {
     setOfferImage(defaultOfferImage);
   };

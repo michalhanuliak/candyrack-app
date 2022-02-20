@@ -16,8 +16,7 @@ import { OfferActions } from '../../enums';
 
 const ProductOfferList = ({ setSelectedOffers }: IProductOfferList) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [offers, setOffers] = useState([]);
-  const [currency, setCurrency] = useState('CZK');
+  const [offers, setOffers] = useState({ currency: 'CZK', data: [] });
 
   const getOffersData = async () => {
     setIsLoading(true);
@@ -32,11 +31,9 @@ const ProductOfferList = ({ setSelectedOffers }: IProductOfferList) => {
 
   useEffect(() => {
     (async () => {
-      const { offers: checkoutOffers, currency: checkoutCurrency } =
-        await getOffersData();
+      const { offers: checkoutOffers, currency } = await getOffersData();
 
-      setOffers(checkoutOffers);
-      setCurrency(checkoutCurrency);
+      setOffers({ currency, data: checkoutOffers });
     })();
   }, []);
 
@@ -58,7 +55,7 @@ const ProductOfferList = ({ setSelectedOffers }: IProductOfferList) => {
 
   const productOffers = useMemo(
     () =>
-      offers.map((offer: IProductOfferResponse) => {
+      offers.data.map((offer: IProductOfferResponse) => {
         const {
           id,
           image,
@@ -77,12 +74,12 @@ const ProductOfferList = ({ setSelectedOffers }: IProductOfferList) => {
             fullPrice={fullPrice}
             discountedPrice={discountedPrice}
             description={shortPrice}
-            currency={currency}
+            currency={offers.currency}
             handleOfferActions={handleOfferActions}
           />
         );
       }),
-    [offers]
+    [offers.data]
   );
 
   return isLoading ? (
