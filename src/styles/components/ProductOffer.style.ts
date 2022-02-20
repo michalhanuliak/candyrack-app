@@ -9,13 +9,13 @@ interface IProps {
 
 export const OfferWrapper = styled.li`
   ${tw`
-  items-center
-  flex
-  list-none
-  mb-2
-  box-border
-  w-full
-  p-4
+    items-center
+    flex
+    list-none
+    mb-2
+    box-border
+    w-full
+    p-4
   `}
 
   @media (min-width: ${SCREENS.md}) {
@@ -40,7 +40,7 @@ export const OfferImage = styled.img`
 
 export const OfferInfo = styled.div`
   ${tw`
-    ml-4
+    m-2
   `}
 
   @media (min-width: ${SCREENS.md}) {
