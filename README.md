@@ -1,8 +1,8 @@
 # Getting Started
 
-Download and install required modules
-
 ### `yarn install`
+
+Download and install required modules
 
 ## Available Scripts
 
