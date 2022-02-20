@@ -13,9 +13,13 @@ const CheckoutModal = ({ isOpen, handleModal, product }: ICheckoutModal) => {
 
   const { name, image, price, currency } = product;
 
-  const handleSubmit = () => {
+  const handleClose = () => {
     handleModal();
     setSelectedOffers(new Set());
+  };
+
+  const handleSubmit = () => {
+    handleClose();
     // eslint-disable-next-line no-alert
     alert(
       !selectedOffers.size
@@ -28,7 +32,7 @@ const CheckoutModal = ({ isOpen, handleModal, product }: ICheckoutModal) => {
     <GenericModal
       title={"Wait, don't miss our deals, today only!"}
       isOpen={isOpen}
-      onClose={handleModal}
+      onClose={handleClose}
       onSubmit={handleSubmit}
       data-cy="checkoutModal"
     >
