@@ -34,14 +34,8 @@ const ProductOffer = ({
   };
 
   const offerAction = () => {
-    if (isSelected) {
-      setIsSelected(false);
-      handleOfferActions(OfferActions.REMOVE, id);
-      return;
-    }
-
-    setIsSelected(true);
-    handleOfferActions(OfferActions.ADD, id);
+    setIsSelected(!isSelected);
+    handleOfferActions(isSelected ? OfferActions.REMOVE : OfferActions.ADD, id);
   };
 
   return (
