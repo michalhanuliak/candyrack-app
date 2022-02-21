@@ -7,6 +7,10 @@ class CheckoutModal {
 
   getOfferList = () => cy.get('[data-cy="offerList"]');
 
+  getErrorMessage = () => cy.get('[data-cy="errorMessage"]');
+
+  getInfoMessage = () => cy.get('[data-cy="infoMessage"]');
+
   getOfferActionButton = () => cy.get('[data-cy="offerActionButton"]');
 
   getCloseButton = () => cy.get('[data-cy="modalCloseButton"]');

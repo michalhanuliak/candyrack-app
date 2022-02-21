@@ -19,6 +19,12 @@ export const LoaderWrapper = styled.div`
   }
 `;
 
+export const InfoMessage = styled.p`
+  ${tw`
+    text-center
+  `}
+`;
+
 export const ErrorMessage = styled.p`
   ${tw`
     text-red-400

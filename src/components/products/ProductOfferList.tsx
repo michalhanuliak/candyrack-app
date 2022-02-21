@@ -9,6 +9,7 @@ import {
   OfferList,
   LoaderWrapper,
   ErrorMessage,
+  InfoMessage,
 } from '../../styles/components/ProductOfferList.style';
 
 import { IProductOfferResponse } from '../../interfaces/ProductOffer.interface';
@@ -26,17 +27,21 @@ const ProductOfferList = ({ setSelectedOffers }: IProductOfferList) => {
     const data = await axios
       .get('https://private-803503-digismoothietest.apiary-mock.com/offers')
       .then((res) => res.data)
-      .catch(() => setIsError(isError));
+      .catch(() => setIsError(true));
 
     setIsLoading(false);
+
     return data;
   };
 
   useEffect(() => {
     (async () => {
-      const { offers: checkoutOffers, currency } = await getOffersData();
-
-      setOffers({ currency, data: checkoutOffers });
+      try {
+        const { offers: checkoutOffers, currency } = await getOffersData();
+        setOffers({ currency, data: checkoutOffers });
+      } catch {
+        setIsError(true);
+      }
     })();
   }, []);
 
@@ -95,7 +100,16 @@ const ProductOfferList = ({ setSelectedOffers }: IProductOfferList) => {
 
     if (isError)
       return (
-        <ErrorMessage>An error has occured while fetching data.</ErrorMessage>
+        <ErrorMessage data-cy="errorMessage">
+          An error has occured while fetching data.
+        </ErrorMessage>
+      );
+
+    if (productOffers.length === 0)
+      return (
+        <InfoMessage data-cy="infoMessage">
+          No offers for this product
+        </InfoMessage>
       );
 
     return <OfferList data-cy="offerList">{productOffers}</OfferList>;

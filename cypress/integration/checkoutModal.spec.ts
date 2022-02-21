@@ -7,6 +7,7 @@ describe('Checkout modal', () => {
 
   beforeEach(() => {
     cy.visit('/');
+
     checkoutModal.getBuyButton().click();
   });
 
@@ -67,5 +68,46 @@ describe('Checkout modal', () => {
     cy.clickAllOffers();
 
     checkoutModal.getSubmitButton().click();
+  });
+});
+
+describe('Checkout modal api response', () => {
+  const checkoutModal = new CheckoutModal();
+
+  beforeEach(() => {
+    cy.visit('/');
+  });
+
+  it('show error message', () => {
+    cy.intercept(
+      'GET',
+      'https://private-803503-digismoothietest.apiary-mock.com/offers',
+      {
+        statusCode: 404,
+      }
+    ).as('getErrorOffers');
+
+    checkoutModal.getBuyButton().click();
+    cy.wait('@getErrorOffers');
+    checkoutModal.getErrorMessage().should('contain', 'error');
+  });
+
+  it('show error message', () => {
+    cy.intercept(
+      'GET',
+      'https://private-803503-digismoothietest.apiary-mock.com/offers',
+      (req) => {
+        req.reply((res) => {
+          const emptyOffers = { ...res };
+          emptyOffers.body.offers = [];
+
+          res.send(emptyOffers);
+        });
+      }
+    ).as('getNoOffers');
+
+    checkoutModal.getBuyButton().click();
+    cy.wait('@getNoOffers');
+    checkoutModal.getInfoMessage().should('contain', 'No offers');
   });
 });
