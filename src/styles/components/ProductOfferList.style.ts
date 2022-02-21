@@ -18,3 +18,10 @@ export const LoaderWrapper = styled.div`
     `}
   }
 `;
+
+export const ErrorMessage = styled.p`
+  ${tw`
+    text-red-400
+    text-center
+  `}
+`;

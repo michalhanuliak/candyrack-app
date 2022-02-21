@@ -8,6 +8,7 @@ import ProductOffer from './ProductOffer';
 import {
   OfferList,
   LoaderWrapper,
+  ErrorMessage,
 } from '../../styles/components/ProductOfferList.style';
 
 import { IProductOfferResponse } from '../../interfaces/ProductOffer.interface';
@@ -16,6 +17,7 @@ import { OfferActions } from '../../enums';
 
 const ProductOfferList = ({ setSelectedOffers }: IProductOfferList) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [offers, setOffers] = useState({ currency: 'CZK', data: [] });
 
   const getOffersData = async () => {
@@ -23,7 +25,8 @@ const ProductOfferList = ({ setSelectedOffers }: IProductOfferList) => {
 
     const data = await axios
       .get('https://private-803503-digismoothietest.apiary-mock.com/offers')
-      .then((res) => res.data);
+      .then((res) => res.data)
+      .catch(() => setIsError(isError));
 
     setIsLoading(false);
     return data;
@@ -82,13 +85,23 @@ const ProductOfferList = ({ setSelectedOffers }: IProductOfferList) => {
     [offers.data]
   );
 
-  return isLoading ? (
-    <LoaderWrapper>
-      <TailSpin ariaLabel="loading-indicator" color="red" />
-    </LoaderWrapper>
-  ) : (
-    <OfferList data-cy="offerList">{productOffers}</OfferList>
-  );
+  const handleDisplayData = () => {
+    if (isLoading)
+      return (
+        <LoaderWrapper>
+          <TailSpin ariaLabel="loading-indicator" color="red" />
+        </LoaderWrapper>
+      );
+
+    if (isError)
+      return (
+        <ErrorMessage>An error has occured while fetching data.</ErrorMessage>
+      );
+
+    return <OfferList data-cy="offerList">{productOffers}</OfferList>;
+  };
+
+  return handleDisplayData();
 };
 
 export default ProductOfferList;
